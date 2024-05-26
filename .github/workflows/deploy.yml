@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master 
-      - main # Adjusted to trigger on pushes to master
+      - main # Adjusted to triger on pushes to master
 
 jobs:
   build-and-push:
