@@ -3,15 +3,18 @@ name: Build and Deploy to Docker Hub
 on:
   push:
     branches:
-      - master
-      - main
-  
+      - master 
+      - main # Adjusted to trigger on pushes to master
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
     - name: Check Out Repo
       uses: actions/checkout@v2
+
+    - name: Prepare Dockerfile
+      run: cp ./docker/Dockerfile.user ./Dockerfile
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -23,12 +26,13 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: ./dockerfile
+        file: ./Dockerfile
         push: true
-        tags: jatinder1901243329/cont-deploy  # Replace with your Docker Hub username and repository
+        tags: jatinder1901243329/cont-deploy
 
     - name: Verify Pushed Image
       run: docker pull jatinder1901243329/cont-deploy
+
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
